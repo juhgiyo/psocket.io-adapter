@@ -6,7 +6,6 @@
     "type": "git",
     "url": "git://github.com/juhgiyo/psocket.io-adapter.git"
   },
-  "private": true,
   "description": "",
   "dependencies": {
     "debug": "1.0.2",
