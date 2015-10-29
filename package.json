@@ -1,0 +1,15 @@
+{
+  "name": "psocket.io-adapter",
+  "version": "0.0.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/juhgiyo/psocket.io-adapter.git"
+  },
+  "private": true,
+  "description": "",
+  "dependencies": {
+    "debug": "1.0.2",
+    "socket.io-adapter": "^0.3.1"
+  }
+}
