@@ -26,11 +26,6 @@ function PAdapter(nsp){
 
 PAdapter.prototype= Object.create(Adapter.prototype);
 PAdapter.prototype.constructor = PAdapter;
-/**
- * Inherits from `EventEmitter`.
- */
-
-PAdapter.prototype.__proto__ = Emitter.prototype;
 
 /**
  * Adds a socket from a room.
@@ -58,7 +53,7 @@ PAdapter.prototype.add = function(id, room, fn){
  * @api public
  */
 
-Adapter.prototype.del = function(id, room, fn){
+PAdapter.prototype.del = function(id, room, fn){
     this.sids[id] = this.sids[id] || {};
     this.rooms[room] = this.rooms[room] || {};
     delete this.sids[id][room];
@@ -77,7 +72,7 @@ Adapter.prototype.del = function(id, room, fn){
  * @api public
  */
 
-Adapter.prototype.delAll = function(id, fn){
+PAdapter.prototype.delAll = function(id, fn){
     var rooms = this.sids[id];
     if (rooms) {
         for (var room in rooms) {
@@ -105,7 +100,7 @@ Adapter.prototype.delAll = function(id, fn){
  * @api public
  */
 
-Adapter.prototype.broadcast = function(packet, opts){
+PAdapter.prototype.broadcast = function(packet, opts){
     var rooms = opts.rooms || [];
     var except = opts.except || [];
     var flags = opts.flags || {};
