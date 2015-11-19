@@ -103,36 +103,35 @@ PAdapter.prototype.delAll = function(id, fn){
 PAdapter.prototype.broadcast = function(packet, opts){
     var rooms = opts.rooms || [];
     var except = opts.except || [];
-    var flags = opts.flags || {};
     var ids = {};
     var self = this;
     var socket;
 
     packet.nsp = this.nsp.name;
-    this.encoder.encode(packet, function(encodedPackets) {
-        if (rooms.length) {
-            for (var i = 0; i < rooms.length; i++) {
-                var room = self.rooms[rooms[i]];
-                if (!room) continue;
-                for (var id in room) {
-                    if (room.hasOwnProperty(id)) {
-                        if (ids[id] || ~except.indexOf(id)) continue;
-                        socket = self.nsp.connected[id];
-                        if (socket) {
-                            socket.packet(encodedPackets, true, flags.volatile);
-                            ids[id] = true;
-                        }
+    if (rooms.length) {
+        for (var i = 0; i < rooms.length; i++) {
+            var room = self.rooms[rooms[i]];
+            if (!room) continue;
+            for (var id in room) {
+                if (room.hasOwnProperty(id)) {
+                    if (ids[id] || ~except.indexOf(id)) continue;
+                    socket = self.nsp.connected[id];
+                    if (socket) {
+                        socket.emit.apply(socket,packet);
+                        ids[id] = true;
                     }
                 }
             }
-        } else {
-            for (var id in self.sids) {
-                if (self.sids.hasOwnProperty(id)) {
-                    if (~except.indexOf(id)) continue;
-                    socket = self.nsp.connected[id];
-                    if (socket) socket.packet(encodedPackets, true, flags.volatile);
+        }
+    } else {
+        for (var id in self.sids) {
+            if (self.sids.hasOwnProperty(id)) {
+                if (~except.indexOf(id)) continue;
+                socket = self.nsp.connected[id];
+                if (socket) {
+                    socket.emit.apply(socket,packet);
                 }
             }
         }
-    });
+    }
 };
